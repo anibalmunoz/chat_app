@@ -1,7 +1,10 @@
-import 'package:chat_app/providers/login_provider.dart';
+import 'package:chat_app/helpers/show_alert.dart';
+import 'package:chat_app/pages/usuarios_page/usuarios_page.dart';
+import 'package:chat_app/providers/auth_provider.dart';
 import 'package:chat_app/widgets/boton_azul.dart';
 import 'package:chat_app/widgets/custom_input.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class LoginForm extends StatefulWidget {
   const LoginForm({super.key});
@@ -13,6 +16,8 @@ class LoginForm extends StatefulWidget {
 class _LoginFormState extends State<LoginForm> {
   @override
   Widget build(BuildContext context) {
+    final authProvider = Provider.of<AuthProvider>(context);
+
     return Container(
       margin: const EdgeInsets.only(top: 40),
       padding: const EdgeInsets.symmetric(horizontal: 50),
@@ -22,21 +27,29 @@ class _LoginFormState extends State<LoginForm> {
           isPassworrd: false,
           keyboardType: TextInputType.emailAddress,
           placeHolder: "Correo",
-          textController: LoginProvider.emailController,
+          textController: AuthProvider.emailController,
         ),
         CustomInput(
           icon: Icons.password,
           placeHolder: "Contraseña",
-          textController: LoginProvider.passController,
+          textController: AuthProvider.passController,
           keyboardType: TextInputType.visiblePassword,
           isPassworrd: true,
         ),
         BotonAzul(
-            onPressed: () {
-              print("adsfasfasdfsdfsd");
-            },
-            text: "Ingresar")
+          loading: authProvider.autenticando,
+          onPressed: authProvider.autenticando ? null : _onLoginPressed,
+          text: "Ingresar",
+        )
       ]),
     );
+  }
+
+  _onLoginPressed() async {
+    final authProvider = Provider.of<AuthProvider>(context, listen: false);
+    FocusScope.of(context).unfocus();
+    final ok = await authProvider.login();
+    if (!ok) return mostrarAlerta(context, titulo: "Login incorrecto", subtitulo: "Revisa tus credenciales");
+    Navigator.pushReplacementNamed(context, UsuariosPage.routeName);
   }
 }

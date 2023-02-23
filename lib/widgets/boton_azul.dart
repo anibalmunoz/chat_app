@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 
 class BotonAzul extends StatelessWidget {
-  final void Function() onPressed;
+  final void Function()? onPressed;
   final String text;
-  const BotonAzul({super.key, required this.onPressed, required this.text});
+  final bool loading;
+  const BotonAzul({super.key, required this.onPressed, required this.text, required this.loading});
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +18,9 @@ class BotonAzul extends StatelessWidget {
         width: double.infinity,
         height: 55,
         child: Center(
-          child: Text(text, style: const TextStyle(color: Colors.white, fontSize: 17)),
+          child: loading
+              ? const Center(child: CircularProgressIndicator(color: Colors.yellow))
+              : Text(text, style: const TextStyle(color: Colors.white, fontSize: 17)),
         ),
       ),
     );

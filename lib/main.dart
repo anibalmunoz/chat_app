@@ -1,8 +1,15 @@
+import 'package:chat_app/providers/auth_provider.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:chat_app/pages/pages.dart';
 import 'package:chat_app/routes/app_routes.dart';
-import 'package:flutter/material.dart';
 
-void main() => runApp(const MyApp());
+void main() => runApp(
+      MultiProvider(
+        providers: [ChangeNotifierProvider(create: (context) => AuthProvider())],
+        child: const MyApp(),
+      ),
+    );
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -12,7 +19,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Material App',
       debugShowCheckedModeBanner: false,
-      initialRoute: ChatPage.routeName,
+      initialRoute: RegisterPage.routeName,
       routes: appRoutes,
     );
   }
