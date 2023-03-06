@@ -16,16 +16,15 @@ dependencies:
   pull_to_refresh_flutter3: ^2.0.1
   provider: ^6.0.5
   http: ^0.13.5
+  flutter_secure_storage: ^8.0.0
 
   # api_module:
   #   git:
-  #     url: git@github.com:SegurosUniversales/mobile-module-api.git 
+  #     url: git@github.com:SegurosUniversales/mobile-module-api.git
   #     ref: main
 
   api_module:
     path: D:/GitHub/module-api-manager
-  flutter_secure_storage: ^8.0.0
-
 
 dev_dependencies:
   flutter_test:
