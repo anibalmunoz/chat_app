@@ -29,7 +29,7 @@ class AuthService {
     };
     final response = await ApiManager.shared.request(
       baseUrl: Environment.apiUrl,
-      pathUrl: loginUrl,
+      pathUrl: registerUrl,
       type: HttpType.post,
       body: data,
       isHttp: true,
