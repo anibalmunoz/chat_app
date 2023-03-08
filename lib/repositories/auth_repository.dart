@@ -16,7 +16,7 @@ class AuthRepository {
   Future<String> obtenerToken() async {
     final storage = FlutterSecureStorage(aOptions: _getAndroidOptions());
     final token = await storage.read(key: "token");
-    return token!;
+    return token ?? '';
   }
 
   Future eliminarToken() async {

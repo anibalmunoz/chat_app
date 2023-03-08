@@ -36,4 +36,18 @@ class AuthService {
     );
     return response;
   }
+
+  Future<ResponseData> renewToken(String token) async {
+    final response = await ApiManager.shared.request(
+      baseUrl: Environment.apiUrl,
+      pathUrl: renewUrl,
+      type: HttpType.get,
+      addHeaders: {
+        'Content-Type': 'application/json',
+        "x-token": token,
+      },
+      isHttp: true,
+    );
+    return response;
+  }
 }

@@ -1,6 +1,9 @@
 import 'package:chat_app/models/usuario.dart';
+import 'package:chat_app/pages/login_page/login_page.dart';
 import 'package:chat_app/pages/usuarios_page/usuario_tile.dart';
+import 'package:chat_app/providers/auth_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:pull_to_refresh_flutter3/pull_to_refresh_flutter3.dart';
 
 class UsuariosPage extends StatefulWidget {
@@ -23,13 +26,14 @@ class _UsuariosPageState extends State<UsuariosPage> {
 
   @override
   Widget build(BuildContext context) {
+    final authProvider = Provider.of<AuthProvider>(context);
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
         elevation: 1,
-        title: const Text("Mi nombre", style: TextStyle(color: Colors.black45)),
+        title: Text(authProvider.usuario.nombre, style: TextStyle(color: Colors.black45)),
         backgroundColor: Colors.white,
-        leading: IconButton(onPressed: () {}, icon: const Icon(Icons.exit_to_app, color: Colors.black45)),
+        leading: IconButton(onPressed: _logout, icon: const Icon(Icons.exit_to_app, color: Colors.black45)),
         actions: [
           Container(
             margin: const EdgeInsets.only(right: 10),
@@ -60,5 +64,11 @@ class _UsuariosPageState extends State<UsuariosPage> {
     await Future.delayed(const Duration(milliseconds: 1000));
     // if failed,use refreshFailed()
     _refreshController.refreshCompleted();
+  }
+
+  _logout() {
+    //DESCONECTARME DEL SOCKET SERVER
+    Provider.of<AuthProvider>(context, listen: false).logout();
+    Navigator.pushReplacementNamed(context, LoginPage.routeName);
   }
 }

@@ -43,10 +43,27 @@ class AuthProvider extends ChangeNotifier {
     if (res.status == HttpStatus.success) {
       final loginRes = LoginResponse.fromJson(res.recordset);
       usuario = loginRes.usuario;
-      AuthRepository.shared.guardarToken(loginRes.token);
+      await AuthRepository.shared.guardarToken(loginRes.token);
       return true;
     }
     final resbody = jsonDecode(res.recordset);
     return resbody['msg'];
+  }
+
+  Future<bool> isLoguedIn() async {
+    final token = await AuthRepository.shared.obtenerToken();
+    final resp = await AuthService.shared.renewToken(token);
+    if (resp.status == HttpStatus.success) {
+      final loginRes = LoginResponse.fromJson(resp.recordset);
+      usuario = loginRes.usuario;
+      await AuthRepository.shared.guardarToken(loginRes.token);
+      return true;
+    }
+    await logout();
+    return false;
+  }
+
+  Future logout() async {
+    await AuthRepository.shared.eliminarToken();
   }
 }
