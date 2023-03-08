@@ -2,6 +2,7 @@ import 'package:chat_app/models/usuario.dart';
 import 'package:chat_app/pages/login_page/login_page.dart';
 import 'package:chat_app/pages/usuarios_page/usuario_tile.dart';
 import 'package:chat_app/providers/auth_provider.dart';
+import 'package:chat_app/services/socket_service.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:pull_to_refresh_flutter3/pull_to_refresh_flutter3.dart';
@@ -27,17 +28,20 @@ class _UsuariosPageState extends State<UsuariosPage> {
   @override
   Widget build(BuildContext context) {
     final authProvider = Provider.of<AuthProvider>(context);
+    final socket = Provider.of<SocketService>(context);
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
         elevation: 1,
-        title: Text(authProvider.usuario.nombre, style: TextStyle(color: Colors.black45)),
+        title: Text(authProvider.usuario.nombre, style: const TextStyle(color: Colors.black45)),
         backgroundColor: Colors.white,
         leading: IconButton(onPressed: _logout, icon: const Icon(Icons.exit_to_app, color: Colors.black45)),
         actions: [
           Container(
             margin: const EdgeInsets.only(right: 10),
-            child: Icon(Icons.check_circle, color: Colors.blue[400]),
+            child: socket.serverStatus == ServerStatus.online
+                ? Icon(Icons.check_circle, color: Colors.blue[400])
+                : const Icon(Icons.offline_bolt, color: Colors.red),
           ),
         ],
       ),
@@ -67,8 +71,8 @@ class _UsuariosPageState extends State<UsuariosPage> {
   }
 
   _logout() {
-    //DESCONECTARME DEL SOCKET SERVER
     Provider.of<AuthProvider>(context, listen: false).logout();
+    Provider.of<SocketService>(context, listen: false).disconnect();
     Navigator.pushReplacementNamed(context, LoginPage.routeName);
   }
 }

@@ -25,6 +25,7 @@ dependencies:
 
   api_module:
     path: D:/GitHub/module-api-manager
+  socket_io_client: ^2.0.1
 
 dev_dependencies:
   flutter_test:

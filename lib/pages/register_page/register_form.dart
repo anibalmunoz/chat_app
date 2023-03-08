@@ -1,6 +1,7 @@
 import 'package:chat_app/helpers/show_alert.dart';
 import 'package:chat_app/pages/pages.dart';
 import 'package:chat_app/providers/auth_provider.dart';
+import 'package:chat_app/services/socket_service.dart';
 import 'package:chat_app/widgets/boton_azul.dart';
 import 'package:chat_app/widgets/custom_input.dart';
 import 'package:flutter/material.dart';
@@ -56,6 +57,7 @@ class _RegisterFormState extends State<RegisterForm> {
     FocusScope.of(context).unfocus();
     final ok = await authProvider.register();
     if (ok) {
+      Provider.of<SocketService>(context, listen: false).connect();
       Navigator.pushReplacementNamed(context, UsuariosPage.routeName);
     } else {
       mostrarAlerta(context, titulo: 'Registro incorrecto', subtitulo: ok);
