@@ -17,15 +17,15 @@ dependencies:
   provider: ^6.0.5
   http: ^0.13.5
   flutter_secure_storage: ^8.0.0
-
-  # api_module:
-  #   git:
-  #     url: git@github.com:SegurosUniversales/mobile-module-api.git
-  #     ref: main
+  socket_io_client: ^2.0.1
 
   api_module:
-    path: D:/GitHub/module-api-manager
-  socket_io_client: ^2.0.1
+    git:
+      url: https://github.com/anibalmunoz/module-api-manager.git
+      ref: main
+
+  # api_module:
+  #   path: D:/GitHub/module-api-manager
 
 dev_dependencies:
   flutter_test:
